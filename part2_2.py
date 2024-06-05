@@ -9,12 +9,9 @@ pi = np.pi
 def plot_func(X, func, color, title, legend):
     ymin = min(func) 
     ymax = max(func) 
-
     ymax = ymax + 0.1 * (ymax - ymin)
     ymin = ymin - 0.1 * (ymax - ymin)
-
     plt.figure(figsize=(8, 5)) 
-
     plt.ylim(ymin, ymax)
     plt.plot(X, func.real, color=f'{color}')
     plt.xlabel('t')
@@ -27,10 +24,8 @@ def plot_func(X, func, color, title, legend):
 def cmp_func(X, funcs, title, legend=['Source function', 'Restored function'], labels=['t']):
     ymin = min([min(func) for func in funcs])
     ymax = max([max(func) for func in funcs])
-
     ymax = ymax + 0.1 * (ymax - ymin)
     ymin = ymin - 0.1 * (ymax - ymin)
-
     plt.figure(figsize=(8, 5)) 
     colors = ['black', 'red', 'cyan']
     plt.ylim(ymin, ymax)
@@ -46,17 +41,13 @@ def cmp_func(X, funcs, title, legend=['Source function', 'Restored function'], l
 def plot_image(X, func, title):
     ymin = min(func.real.min(), func.imag.min())
     ymax = max(func.real.max(), func.imag.max())
-
     ymax = ymax + 0.1 * (ymax - ymin)
     ymin = ymin - 0.1 * (ymax - ymin)
-
     plt.figure(figsize=(8, 5)) 
-
     plt.ylim(ymin, ymax)
     plt.plot(X, func.real, color='seagreen')
     plt.plot(X, func.imag, color='tomato')
     plt.xlabel('\u03C9')
-    # plt.ylabel('f(\u03C9)')
     plt.legend(['Real', 'Imag'], loc='upper right')
     plt.title(title)
     plt.grid(color = 'black', linestyle = '--', linewidth = 0.5)
@@ -65,12 +56,9 @@ def plot_image(X, func, title):
 def plot_freq_response(X, fr, title, legend=['Frequency response'], scale='linear'):
     ymin = min(fr) 
     ymax = max(fr) 
-
     ymax = ymax + 0.1 * (ymax - ymin)
     ymin = ymin - 0.1 * (ymax - ymin)
-
     plt.figure(figsize=(8, 5)) 
-
     plt.xscale(scale)
     plt.yscale(scale)
     plt.plot(X, fr.real)
@@ -95,16 +83,10 @@ def dotProduct(X, f, g):
 
 get_fourier_image = lambda X, V, func: np.array([1 / (np.sqrt(2 * np.pi)) * dotProduct(X, func, (lambda t: np.e ** (-1j * i * t))(X)) for i in V])
 get_fourier_function = lambda X, V, image: np.array([1 / (np.sqrt(2 * np.pi)) * dotProduct(V, image, (lambda t: np.e ** (1j * x * t))(V)) for x in X])
-
 get_func = lambda a, t1, t2: np.vectorize(lambda t: a if t1 <= t <= t2 else 0, otypes=[complex])
 noised = lambda X, func, b, c, d: func + b * (np.random.rand(X.size) - 0.5) + c * np.sin(d * X)
-
 differentiate = lambda X, func: np.array([0 if i == 0 else (func[i] - func[i - 1]) / (X[i] - X[i - 1]) for i in range(len(func))])
-
-
-
 get_order_filter = lambda T1, T2, T3: tf2zpk([T1 ** 2, 2 * T1, 1], [T2 * T3, T2 + T3, 1])
-
 
 
 def filtering(a, b, c, d, t1, t2, filter):
@@ -146,35 +128,17 @@ def filtering(a, b, c, d, t1, t2, filter):
     plot_freq_response(w, abs(h), title='АЧХ фильтра', scale='linear')
     
 
-
-## THIRD TASK
-
 # T1 = 0.1
 # T2 = 0.2
 # T3 = 0.3
-
 # filtering(a=5, b=0, c=0.5, d=100, t1=2, t2=4, filter=get_order_filter(0.1, 0.2, 0.3))
 
 # T1 = 0.01
 # T2 = 0.02
 # T3 = 0.03
-
 # filtering(a=5, b=0, c=0.5, d=100, t1=2, t2=4, filter=get_order_filter(0.01, 0.02, 0.03))
-
-
-# T1 = 0.01
-# T2 = 0.02
-# T3 = 0.03
-
 # filtering(a=5, b=0, c=5, d=100, t1=2, t2=4, filter=get_order_filter(0.01, 0.02, 0.03))
-
-# T1 = 0.01
-# T2 = 0.02
-# T3 = 0.03
-
-filtering(a=5, b=0, c=0.1, d=100, t1=2, t2=4, filter=get_order_filter(0.01, 0.02, 0.03))
-
-
+# filtering(a=5, b=0, c=0.1, d=100, t1=2, t2=4, filter=get_order_filter(0.01, 0.02, 0.03))
 
 
 
